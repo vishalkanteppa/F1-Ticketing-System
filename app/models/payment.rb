@@ -1,5 +1,5 @@
 class Payment < ApplicationRecord
-  belongs_to :orders
+  belongs_to :order
 
   validates_presence_of :status, :payment_method
 end

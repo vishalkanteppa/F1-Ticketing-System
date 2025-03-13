@@ -4,6 +4,6 @@ class User < ApplicationRecord
     has_many :orders
     has_many :payments, through: :orders
 
-    validates_presence_of :name, :username
-    validates_uniqueness_of :name, :username
+    validates_presence_of :email, :username, :role
+    validates_uniqueness_of :email, :username
 end
