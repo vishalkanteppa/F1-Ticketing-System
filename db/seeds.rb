@@ -34,7 +34,8 @@ event1 = Event.create(
   name: "Australian Grand Prix",
   location: "Melbourne",
   date: "2025-05-25 14:00:00",
-  status: "upcoming"
+  status: "upcoming",
+  event_image_url: "events/aus.jpg"
 )
 puts "Event 1: #{event1.errors.full_messages}" if event1.errors.any?
 
@@ -43,14 +44,17 @@ event2 = Event.create(
   name: "Bahrain Grand Prix",
   location: "Bahrain International Circuit",
   date: "2025-07-05 13:00:00", 
-  status: "upcoming"
+  status: "upcoming",
+  event_image_url: "events/bahrain.jpg"
+
 )
 
 event3 = Event.create(
   name: "Italian Grand Prix",
   location: "Monza, Italy",
   date: "2025-09-05 13:00:00", 
-  status: "upcoming"
+  status: "upcoming",
+  event_image_url: "events/monza.avif"
   )
 
 Ticket.create([

@@ -1,0 +1,30 @@
+<% content_for :title, "Events" %>
+
+<!-- <div class="w-full h-screen max-w-5xl mx-auto py-10 bg-cover bg-center" style="background-image: url('<%= asset_path("spa.jpg") %>');"> -->
+<div class="w-full h-screen max-w-5xl mx-auto py-10 bg-cover bg-center">
+
+  <% if notice.present? %>
+    <div class="bg-green-100 text-green-800 border-l-4 border-green-500 p-3 rounded-md shadow mb-6">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-4xl font-extrabold text-white">Events</h1>
+    <!-- New event creation only for admins -->
+    <%= link_to "New Event", new_event_path, class: "bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md transition" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @events.each do |event| %>
+      <div class="bg-white shadow-lg rounded-xl overflow-hidden p-5 hover:shadow-2xl transition" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('<%= asset_path(event.event_image_url) %>'); background-size: 100% auto;">
+        <h2 class="text-xl font-bold text-white">
+          <%= link_to event.name, event_path(event), class: "hover:underline" %>
+        </h2>
+        <p class="text-white mt-2"><strong>Location:</strong> <%= event.location %></p>
+        <p class="text-white"><strong>Date:</strong> <%= event.date.strftime("%B %d, %Y") %></p>
+      </div>
+      <br>
+    <% end %>
+  </div>
+</div>
