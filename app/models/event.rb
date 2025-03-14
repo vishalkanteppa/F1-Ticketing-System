@@ -16,11 +16,19 @@ class Event < ApplicationRecord
 
     def generate_tickets
         ticket_categories.each do |category, count|
+            if category == "General Admission"
+                price = 150
+            elsif category == "Grandstand"
+                price = 400
+            elsif category == "VIP"
+                price = 900
+            end
             count.times do |i|
-                tickets.create(
+                ticket = tickets.create(
                     category: category,
                     seat_no: "#category - #{i+1}",
-                    status: "available"
+                    status: "available",
+                    price: price
                 )
             end
         end

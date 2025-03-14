@@ -57,41 +57,41 @@ event3 = Event.create(
   event_image_url: "events/monza.avif"
   )
 
-Ticket.create([
-  { category: "General Admission", price: 150.00, availability: 500, event: event1 },
-  { category: "Grandstand", price: 450.00, availability: 200, event: event1 },
-  { category: "VIP", price: 1200.00, availability: 50, event: event1 },
+# Ticket.create([
+#   { category: "General Admission", price: 150.00, event: event1 },
+#   { category: "Grandstand", price: 450.00, event: event1 },
+#   { category: "VIP", price: 1200.00, availability: 50, event: event1 },
 
-  { category: "General Admission", price: 130.00, availability: 600, event: event2 },
-  { category: "Grandstand", price: 400.00, availability: 250, event: event2 },
-  { category: "VIP", price: 1000.00, availability: 75, event: event2 },
+#   { category: "General Admission", price: 130.00, event: event2 },
+#   { category: "Grandstand", price: 400.00, event: event2 },
+#   { category: "VIP", price: 1000.00, event: event2 },
 
-  { category: "General Admission", price: 140.00, availability: 550, event: event3 },
-  { category: "Grandstand", price: 420.00, availability: 220, event: event3 },
-  { category: "VIP", price: 1100.00, availability: 60, event: event3 }
-])
+#   { category: "General Admission", price: 140.00, event: event3 },
+#   { category: "Grandstand", price: 420.00, event: event3 },
+#   { category: "VIP", price: 1100.00, event: event3 }
+# ])
 
-order1 = Order.create(
-    user: user1,
-    status: "pending", # default value
-    total_price: 300.00
-)
+# order1 = Order.create(
+#     user: user1,
+#     status: "pending", # default value
+#     total_price: 300.00
+# )
 
-order2 = Order.create(
-    user: user2,
-    status: "pending",
-    total_price: 750.00
-)
+# order2 = Order.create(
+#     user: user2,
+#     status: "pending",
+#     total_price: 750.00
+# )
 
-order3 = Order.create(
-    user: admin_user,
-    status: "pending",
-    total_price: 120.00
-)
+# order3 = Order.create(
+#     user: admin_user,
+#     status: "pending",
+#     total_price: 120.00
+# )
 
-Payment.create([
-  { order: order1, status: "pending", payment_method: "Credit Card" },
-  { order: order2, status: "pending", payment_method: "PayPal" },
-  { order: order3, status: "pending", payment_method: "Bank Transfer" }
-])
+# Payment.create([
+#   { order: order1, status: "pending", payment_method: "Credit Card" },
+#   { order: order2, status: "pending", payment_method: "PayPal" },
+#   { order: order3, status: "pending", payment_method: "Bank Transfer" }
+# ])
 
