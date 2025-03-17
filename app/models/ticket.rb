@@ -1,4 +1,5 @@
 class Ticket < ApplicationRecord
+  has_many :line_items
   belongs_to :event
 
   validates_presence_of :category, :price

@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
     has_many :orders
     has_many :payments, through: :orders
+    has_one :cart
 
     validates_presence_of :email, :username, :role
     validates_uniqueness_of :email, :username
