@@ -1,6 +1,57 @@
-<div id="<%= dom_id cart %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">User:</strong>
-    <%= cart.user_id %>
-  </p>
+<div id="<%= dom_id cart %>" class="max-w-2xl mx-auto p-6 rounded-lg" style="background-color: rgba(0, 0, 0, 0.5);">
+    <h2 class="text-2xl text-white font-bold mb-4">Your Cart</h2>
+
+    <div class="overflow-x-auto text-white">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="border-b border-gray-700 border-opacity-70">
+                    <th class="text-left py-3 px-4 font-semibold">Event</th>
+                    <th class="text-left py-3 px-4 font-semibold">Category</th>
+                    <th class="text-center py-3 px-4 font-semibold">Quantity</th>
+                    <th class="text-right py-3 px-4 font-semibold">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="4">
+                        <hr>
+                    </td>
+                </tr>
+                <% total_price = 0 %>
+                <% cart.line_items.each do |line_item| %>
+                <% total_price += line_item.total_price %>
+                <tr>
+                    <td class="text-left py-3 px-4">
+                        <span class="font-medium"><%= line_item.ticket.event.name %></span>
+                    </td>
+                    <td class="text-left py-3 px-4 text-gray-300 text-sm">
+                        <%= line_item.ticket.category %>
+                    </td>
+                    <td class="text-center py-3 px-4 text-gray-300 text-sm">
+                        <%= line_item.quantity %>
+                    </td>
+                    <td class="text-right py-3 px-4 text-green-400 font-semibold">
+                        $<%= sprintf('%.2f', line_item.total_price) %>
+                    </td>
+                    <td class="text-center py-3 px-4">
+                        <%= button_to line_item_path(line_item), method: :put, data: { confirm: 'Are you sure you want to remove this item from the cart?' }, class: 'text-red-600 hover:text-red-800' do %>
+                        <span class="text-lg font-bold">-</span>
+                        <% end %>
+                    </td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <div class="mt-6 flex text-white justify-between items-center border-t border-gray-700 border-opacity-70 pt-4">
+        <p class="text-xl font-bold">Total Price:</p>
+        <p class="text-xl font-bold text-green-500">$<%= sprintf('%.2f', total_price) %></p>
+    </div>
+
+    <br>
+    <a href="#" class="block mt-6 text-center bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-md">
+        Proceed to Checkout
+    </a>
 </div>

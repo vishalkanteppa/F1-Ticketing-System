@@ -1,9 +1,10 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: %i[ show edit update destroy ]
+  include CurrentCart
+  before_action :set_cart, only: %i[ index show edit update destroy ]
 
   # GET /carts or /carts.json
   def index
-    @carts = Cart.all
+    @cart = Cart.find(session[:cart_id])
   end
 
   # GET /carts/1 or /carts/1.json
@@ -59,9 +60,9 @@ class CartsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_cart
-      @cart = Cart.find(params.expect(:id))
-    end
+    # def set_cart
+    #   @cart = Cart.find(params.expect(:id))
+    # end
 
     # Only allow a list of trusted parameters through.
     def cart_params

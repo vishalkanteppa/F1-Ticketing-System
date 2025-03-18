@@ -3,11 +3,17 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
 
-Payment.delete_all
-Order.delete_all
-Ticket.delete_all
-Event.delete_all
-User.delete_all
+# Payment.delete_all
+# Order.delete_all
+# LineItem.delete_all  # Line items should be deleted before carts and tickets
+# Cart.delete_all
+# Ticket.delete_all
+# Event.delete_all
+# User.delete_all
+
+ActiveRecord::Base.connection.execute("TRUNCATE payments, orders, line_items, carts, tickets, events, users RESTART IDENTITY CASCADE;")
+
+
 
 user1 = User.create(
   email: "user1@example.com",
@@ -37,7 +43,6 @@ event1 = Event.create(
   status: "upcoming",
   event_image_url: "events/aus.jpg"
 )
-puts "Event 1: #{event1.errors.full_messages}" if event1.errors.any?
 
 
 event2 = Event.create(

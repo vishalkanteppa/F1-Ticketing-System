@@ -23,14 +23,11 @@ class Event < ApplicationRecord
             elsif category == "VIP"
                 price = 900
             end
-            count.times do |i|
-                ticket = tickets.create(
-                    category: category,
-                    seat_no: "#category - #{i+1}",
-                    status: "available",
-                    price: price
-                )
-            end
+            ticket = tickets.create(
+                category: category,
+                available_count: count,
+                price: price
+            )
         end
     end
 
