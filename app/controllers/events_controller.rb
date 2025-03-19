@@ -1,6 +1,8 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_event
+  include CurrentCart
+  before_action :set_cart, only: %i[ show ]
 
 
   # GET /events or /events.json

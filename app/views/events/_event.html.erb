@@ -5,7 +5,8 @@
 
     <% @event.tickets.each do |ticket| %>
     <div class="">
-        <p><%= ticket.category %> - <%= ticket.price %></p>
+        <p><%= ticket.category %> - <%= number_to_currency(ticket.price, unit: "€") %></p>
+        <%= @cart.quantity_of_ticket(ticket) %> &times; in cart
         <%= button_to "Add to Cart", line_items_path(ticket_id: ticket.id), method: :post, class: "rounded-md px-5 py-2 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer" %>
         <br>
     </div>

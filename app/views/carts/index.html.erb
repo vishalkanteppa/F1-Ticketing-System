@@ -6,10 +6,10 @@
   <% end %>
 
   <div id="carts" class="min-w-full">
-    <% if @cart %>
+    <% if @cart && @cart.line_items.any? %>
       <%= render @cart %>
     <% else %>
-      <p class="text-center my-10">No carts found.</p>
+          <h2 class="text-center text-2xl text-white font-bold mb-4">Your cart is empty</h2>
     <% end %>
   </div>
 </div>

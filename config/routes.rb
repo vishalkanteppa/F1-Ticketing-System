@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :line_items
   resources :carts
   resources :events
+  resources :orders
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

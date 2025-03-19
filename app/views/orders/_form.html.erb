@@ -1,0 +1,29 @@
+<% if order.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2
+    font-medium rounded-lg mt-3">
+        <ul>
+            <% order.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>
+
+<%= form_with url: orders_path, method: :post, local: true, model: @order do |form| %>
+    <div class="mb-4">
+        <%= form.label :payment_type, "Payment Type:", class: "block font-medium text-white" %>
+        <%= form.select :payment_type,
+            Order.payment_types.keys, { prompt: 'Select a payment method' },
+            class: "mt-1 block w-full border-green-300 rounded-md shadow-sm" %>
+    </div>
+
+    <div class="mt-6 flex text-white justify-between items-center border-t border-gray-700 border-opacity-70 pt-4">
+        <p class="text-xl font-bold">Total Price:</p>
+        <p class="text-xl font-bold text-white"><%= number_to_currency(@order.total_price, unit: "€") %></p>
+    </div>
+
+    <br>
+    <div>
+        <%= form.submit "Save Order", class: "bg-white font-semibold py-2 px-4 rounded-md" %>
+    </div>
+<% end %>

@@ -18,9 +18,7 @@
                         <hr>
                     </td>
                 </tr>
-                <% total_price = 0 %>
                 <% cart.line_items.each do |line_item| %>
-                <% total_price += line_item.total_price %>
                 <tr>
                     <td class="text-left py-3 px-4">
                         <span class="font-medium"><%= line_item.ticket.event.name %></span>
@@ -31,8 +29,8 @@
                     <td class="text-center py-3 px-4 text-gray-300 text-sm">
                         <%= line_item.quantity %> &times;
                     </td>
-                    <td class="text-right py-3 px-4 text-green-400 font-semibold">
-                        $<%= sprintf('%.2f', line_item.total_price) %>
+                    <td class="text-right py-3 px-4 text-white font-semibold">
+                        <%= number_to_currency(line_item.total_price, unit: "€") %>
                     </td>
                     <td class="text-center py-3 px-4">
                         <%= button_to line_item_path(line_item), method: :put, data: { confirm: 'Are you sure you want to remove this item from the cart?' }, class: 'text-red-600 hover:text-red-800' do %>
@@ -44,15 +42,12 @@
             </tbody>
         </table>
     </div>
-
-    <br>
     <div class="mt-6 flex text-white justify-between items-center border-t border-gray-700 border-opacity-70 pt-4">
         <p class="text-xl font-bold">Total Price:</p>
-        <p class="text-xl font-bold text-green-500">$<%= sprintf('%.2f', total_price) %></p>
+        <p class="text-xl font-bold text-white"><%= number_to_currency(cart.total_price, unit: "€") %></p>
     </div>
 
-    <br>
-    <a href="#" class="block mt-6 text-center bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-md">
+    <a href="<%= new_order_path %>" class="block mt-6 text-center bg-white font-semibold py-2.5 px-4 rounded-md">
         Proceed to Checkout
-    </a>
+    </a> 
 </div>
