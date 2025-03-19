@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: %i[ show edit update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_event
+
 
   # GET /events or /events.json
   def index
@@ -66,5 +68,10 @@ class EventsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def event_params
       params.require(:event).permit(:name, :location, :date, :event_image_url)
+    end
+
+    def invalid_event
+      logger.error "Attempt to access invalid event #{params[:id]}"
+      redirect_to events_path, notice: "Invalid event"
     end
 end
