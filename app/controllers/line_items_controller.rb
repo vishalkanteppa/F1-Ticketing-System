@@ -27,7 +27,7 @@ class LineItemsController < ApplicationController
     ticket = Ticket.find(params[:ticket_id])
     @line_item = @cart.line_items.find_by(ticket: ticket)
     if @line_item
-      increment_quantity
+      @line_item.increment_quantity
     else
       @line_item = @cart.line_items.build(
         ticket: ticket, 
@@ -42,11 +42,6 @@ class LineItemsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def increment_quantity
-    @line_item.quantity += 1
-    @line_item.total_price = @line_item.quantity * @line_item.ticket.price
   end
 
   # PATCH/PUT /line_items/1 or /line_items/1.json

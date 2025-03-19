@@ -18,9 +18,7 @@
                         <hr>
                     </td>
                 </tr>
-                <% total_price = 0 %>
                 <% cart.line_items.each do |line_item| %>
-                <% total_price += line_item.total_price %>
                 <tr>
                     <td class="text-left py-3 px-4">
                         <span class="font-medium"><%= line_item.ticket.event.name %></span>
@@ -48,7 +46,7 @@
     <br>
     <div class="mt-6 flex text-white justify-between items-center border-t border-gray-700 border-opacity-70 pt-4">
         <p class="text-xl font-bold">Total Price:</p>
-        <p class="text-xl font-bold text-green-500">$<%= sprintf('%.2f', total_price) %></p>
+        <p class="text-xl font-bold text-green-500">$<%= sprintf('%.2f', cart.total_price) %></p>
     </div>
 
     <br>
