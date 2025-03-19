@@ -1,15 +1,11 @@
 <div class="text-white">
     <h2><%= @event.name %></h2>
     <p><%= @event.location %></p>
-    <p><%= @event.date.strftime("%B %d, %Y") %></p>
+    <p><%= @event.date %></p>
 
     <% @event.tickets.each do |ticket| %>
     <div class="">
-        <p><%= ticket.category %> - <%= sprintf("$%.2f", ticket.price) %></p> 
-        <% line_item = @cart.line_items.find_by(ticket: ticket) %>
-        <% if line_item %>
-            <p>In Cart: <%= line_item.quantity %>&times;</p>
-        <% end %>
+        <p><%= ticket.category %> - <%= ticket.price %></p>
         <%= button_to "Add to Cart", line_items_path(ticket_id: ticket.id), method: :post, class: "rounded-md px-5 py-2 text-white bg-blue-600 hover:bg-blue-500 font-medium cursor-pointer" %>
         <br>
     </div>
