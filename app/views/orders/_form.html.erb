@@ -1,29 +1,67 @@
 <% if order.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2
+<div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2
     font-medium rounded-lg mt-3">
-        <ul>
-            <% order.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-            <% end %>
-        </ul>
-    </div>
+    <ul>
+        <% order.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+        <% end %>
+    </ul>
+</div>
 <% end %>
 
 <%= form_with url: orders_path, method: :post, local: true, model: @order do |form| %>
-    <div class="mb-4">
-        <%= form.label :payment_type, "Payment Type:", class: "block font-medium text-white" %>
-        <%= form.select :payment_type,
-            Order.payment_types.keys, { prompt: 'Select a payment method' },
-            class: "mt-1 block w-full border-green-300 rounded-md shadow-sm" %>
-    </div>
 
-    <div class="mt-6 flex text-white justify-between items-center border-t border-gray-700 border-opacity-70 pt-4">
-        <p class="text-xl font-bold">Total Price:</p>
-        <p class="text-xl font-bold text-white"><%= number_to_currency(@order.total_price, unit: "€") %></p>
+<div data-controller="payment">
+    <div class="my-5">
+        <%= form.label :payment_type, class: "text-white" %>
+        <%= form.select :payment_type, 
+                    Order.payment_types.keys,
+                    { prompt: 'Select a payment method' },
+                    'data-payment-target' => 'selection',
+                    'data-action' => 'payment#showAdditionalFields',
+                    class: "block shadow rounded-md border border-gray-400 outline-none px-3 py" %>
     </div>
+    <%= render partial: 'cc', locals: {form: form} %>
+    <%= render partial: 'sepa', locals: {form: form} %>
+    <%= render partial: 'paypal', locals: {form: form} %>
+</div>
 
-    <br>
-    <div>
-        <%= form.submit "Make payment", class: "bg-white font-semibold py-2 px-4 rounded-md" %>
-    </div>
+<div class="mt-6 flex text-white justify-between items-center border-t border-gray-700 border-opacity-70 pt-4">
+    <p class="text-xl font-bold">Total Price:</p>
+    <p class="text-xl font-bold text-white"><%= number_to_currency(@order.total_price, unit: "€") %></p>
+</div>
+
+<br>
+<div class="inline">
+    <%= form.submit "Make payment", class: "bg-white font-semibold py-2 px-4 rounded-md cursor-pointer" %>
+</div>
+
+<script type="importmap">
+    {
+      "imports": {
+        "@hotwired/stimulus": "https://ga.jspm.io/npm:@hotwired/stimulus@3.2.2/dist/stimulus.js"
+      }
+    }
+</script>
+<script type="module">
+    import {
+        Application,
+        Controller
+    } from "@hotwired/stimulus";
+    const application = Application.start();
+
+    class PaymentController extends Controller {
+        static targets = ["selection", "additionalFields"]
+        initialize() {
+            this.showAdditionalFields()
+        }
+        showAdditionalFields() {
+            let selection = this.selectionTarget.value
+            for (let fields of this.additionalFieldsTargets) {
+                fields.disabled = fields.hidden = (fields.dataset.type != selection)
+            }
+        }
+    }
+    application.register("payment", PaymentController);
+</script>
 <% end %>

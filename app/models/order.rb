@@ -7,8 +7,8 @@ class Order < ApplicationRecord
 
   enum :payment_type, {
     "Credit card": 0,
-    "Debit card": 1,
-    "Paypal": 2
+    "Paypal": 1,
+    "SEPA": 2
   }
 
   validates :payment_type, inclusion: { in: Order.payment_types.keys }

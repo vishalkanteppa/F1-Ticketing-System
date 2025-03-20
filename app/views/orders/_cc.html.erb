@@ -1,0 +1,10 @@
+<fieldset data-payment-target="additionalFields" data-type="Credit card" class="mb-4 p-4">
+  <div class="mb-4">
+    <%= form.label :credit_card_number, class: "block text-sm font-medium text-white" %>
+    <%= form.password_field :credit_card_number, class: "mt-1 block w-full rounded-md focus:border-indigo-500", placeholder: "1234 XXXX XXXX XXXX" %>
+  </div>
+  <div class="mb-4">
+    <%= form.label :expiration_date, class: "block text-sm font-medium text-white" %>
+    <%= form.text_field :expiration_date, class: "mt-1 block w-full rounded-md focus:ring-indigo-500 focus:border-indigo-500", size: 9, placeholder: "e.g. 03/22" %>
+  </div>
+</fieldset>
