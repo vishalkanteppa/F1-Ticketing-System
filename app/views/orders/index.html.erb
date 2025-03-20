@@ -1,0 +1,40 @@
+<% content_for :title, "Orders" %>
+
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div id="orders" class="min-w-full">
+    <% if @orders.any? %>
+      <div class="max-w-2xl mx-auto p-6 rounded-lg" style="background-color: rgba(0, 0, 0, 0.5);">
+        <h2 class="text-2xl text-white font-bold mb-4">Order History</h2>
+        <div class="overflow-x-auto text-white">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-gray-700 border-opacity-70">
+                <th class="text-left py-3 px-4 font-semibold">Order Date</th>
+                <th class="text-left py-3 px-4 font-semibold">Status</th>
+                <th class="text-left py-3 px-4 font-semibold">Payment Type</th>
+                <th class="text-right py-3 px-4 font-semibold">Total Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4">
+                  <hr>
+                </td>
+              </tr>
+              <% @orders.each do |order| %>
+                <%= render partial: 'order', locals: { order: order } %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+    <% else %>
+      <h2 class="text-center text-2xl text-white font-bold mb-4">No orders placed</h2>
+    <% end %>
+  </div>
+</div>

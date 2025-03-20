@@ -10,6 +10,9 @@ class OrdersController < ApplicationController
     end
 
     def show
+    end
+
+    def index
         @orders = Order.all
     end
 
@@ -21,12 +24,11 @@ class OrdersController < ApplicationController
         @order.user = user
         @order.payment_type = params[:order][:payment_type]
 
-        @order.add_line_items_from_cart(@cart)
-
         if @order.save
-            # Cart.destroy(session[:cart_id])
-            # session[:cart_id] = nil
-            redirect_to events_path, notice: "Thank you for your order"
+            @order.add_line_items_from_cart(@cart)
+            Cart.destroy(session[:cart_id])
+            session[:cart_id] = nil
+            redirect_to orders_path, notice: "Thank you for your order"
         else
             render :new, status: :unprocessable_entity
         end

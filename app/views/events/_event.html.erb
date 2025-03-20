@@ -1,7 +1,7 @@
 <div class="text-white">
     <h2><%= @event.name %></h2>
     <p><%= @event.location %></p>
-    <p><%= @event.date %></p>
+    <p><%= @event.date.strftime("%B %d, %Y, %H:%M") %></p> event
 
     <% @event.tickets.each do |ticket| %>
     <div class="">

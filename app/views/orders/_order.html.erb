@@ -1,0 +1,14 @@
+<tr>
+  <td class="text-left py-3 px-4">
+    <%= order.created_at.strftime("%B %d, %Y, %H:%M") %>
+  </td>
+  <td class="text-left py-3 px-4">
+    <%= order.status %>
+  </td>
+  <td class="text-left py-3 px-4">
+    <%= order.payment_type %>
+  </td>
+  <td class="text-right py-3 px-4">
+    <%= number_to_currency(order.total_price, unit: "€") %>
+  </td>
+</tr>
