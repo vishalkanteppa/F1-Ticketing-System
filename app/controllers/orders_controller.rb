@@ -25,6 +25,7 @@ class OrdersController < ApplicationController
         @order.payment_type = params[:order][:payment_type]
 
         if @order.save
+            OrderMailer.confirmation(@order).deliver_now
             @order.add_line_items_from_cart(@cart)
             Cart.destroy(session[:cart_id])
             session[:cart_id] = nil

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation - F1 Tickets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #d81b60;
+        }
+        .order-details {
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Dear <%= @order.user.username %>,</h2>
+        <p>Thank you for your recent order from <strong>F1 Tickets</strong>.</p>
+
+        <p><strong>You ordered the following items:</strong></p>
+        <div class="order-details">
+            <%= render @order.line_items %>
+        </div>
+
+        <p>You will receive an email with the QR code in the coming days. Please feel free to reach out if you do not.</p>
+
+        <p>Kind regards,</p>
+        <p><strong>F1 Ticketing Team</strong></p>
+
+        <div class="footer">
+            &copy; <%= Time.now.year %> F1 Ticketing. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
