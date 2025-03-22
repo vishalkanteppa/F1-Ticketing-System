@@ -39,14 +39,16 @@
 <body>
     <div class="container">
         <h2>Dear <%= @order.user.username %>,</h2>
-        <p>Thank you for your recent order from <strong>F1 Tickets</strong>.</p>
+        <p>Thank you for your recent order from <strong>F1 Ticketing</strong>.</p>
 
         <p><strong>You ordered the following items:</strong></p>
-        <div class="order-details">
-            <%= render @order.line_items %>
-        </div>
+        <<div class="order-details">
+            <% @line_items.each do |line_item| %>
+                <%= sprintf("%2d x %s %s", line_item.quantity, line_item.ticket.event.name, line_item.ticket.category) %> <br>
+            <% end %>
+        </div>>
 
-        <p>You will receive an email with the QR code in the coming days. Please feel free to reach out if you do not.</p>
+        <p>You will receive an email with your e-tickets in the coming days. Please feel free to reach out if you do not.</p>
 
         <p>Kind regards,</p>
         <p><strong>F1 Ticketing Team</strong></p>

@@ -1,7 +1,7 @@
 class LineItem < ApplicationRecord
   belongs_to :ticket
   belongs_to :order, optional: true
-  belongs_to :cart
+  belongs_to :cart, optional: true
 
   def increment_quantity
     self.quantity += 1

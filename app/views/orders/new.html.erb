@@ -1,4 +1,13 @@
 <div class="mx-auto md:w-2/3 w-full">
     <h1 class="font-bold text-2xl text-white">Please select payment type</h1>
+
+    <% if flash[:error] %>
+        <div class="bg-red-50 text-red-500 px-3 py-2
+    font-medium rounded-lg mt-3" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline"><%= flash[:error] %></span>
+        </div>
+    <% end %>
+
     <%= render "form", order: @order %>
 </div>

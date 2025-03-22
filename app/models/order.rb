@@ -14,7 +14,9 @@ class Order < ApplicationRecord
   validates :payment_type, inclusion: { in: Order.payment_types.keys }
 
   def add_line_items_from_cart(cart)
-    cart.line_items.update_all(cart_id: nil, order_id: self.id)
+    cart.line_items.each do |line_item|
+      line_item.update(cart_id: nil, order_id: self.id)
+    end
   end
 
 end

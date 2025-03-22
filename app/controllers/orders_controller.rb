@@ -25,12 +25,19 @@ class OrdersController < ApplicationController
         @order.payment_type = params[:order][:payment_type]
 
         if @order.save
-            OrderMailer.confirmation(@order).deliver_now
             @order.add_line_items_from_cart(@cart)
-            Cart.destroy(session[:cart_id])
-            session[:cart_id] = nil
-            redirect_to orders_path, notice: "Thank you for your order"
+            if @order.line_items.any?
+                OrderMailer.confirmation(@order).deliver_now
+                Cart.destroy(session[:cart_id])
+                session[:cart_id] = nil
+                redirect_to orders_path, notice: "Thank you for your order"
+            else
+                Rails.logger.error "Line items were not correctly added to the order: #{@order.id}"
+                flash[:error] = "There was an error processing your order. Please try again."
+                render :new, status: :unprocessable_entity
+            end
         else
+            flash[:error] = @order.errors.full_messages.join(", ")
             render :new, status: :unprocessable_entity
         end
     end

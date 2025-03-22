@@ -1,7 +1,9 @@
 Dear <%= @order.user.username %>
 Thank you for your recent order from F1 Tickets.
 You ordered the following items:
-<%= render @order.line_items -%>
+<%= @line_items.each do |line_item| %>
+    <%= sprintf("%2d x %s", line_item.quantity, line_item.ticket.event.name) %>
+<% end %>
 You will receive an email with the QR code in the coming days. Please feel free to reach out in case you do not.
 
 Kind regards,
