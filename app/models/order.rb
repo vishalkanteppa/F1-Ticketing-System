@@ -19,4 +19,36 @@ class Order < ApplicationRecord
     end
   end
 
+  def process_payment(payment_type:, payment_details:)
+    if payment_type == "Credit card"
+      payment_details = {
+          credit_card_number: payment_details[:credit_card_number],
+          expiration_date: payment_details[:expiration_date],
+          cvv: payment_details[:cvv]
+          }
+    elsif payment_type == "Paypal"
+        payment_details = {
+            credit_card_number: payment_details[:wallet_no],
+            }
+    elsif payment_type == "SEPA"
+        payment_details = {
+            iban: payment_details[:iban],
+            bic: payment_details[:bic],
+            }
+    end
+    payment_result = Fakepay.make_payment(
+      order_id: self.id,
+      payment_type: payment_type,
+      payment_details: payment_details
+    )
+
+    if payment_result.succeeded?
+      self.update(status: "paid")
+      Rails.logger.info "Payment processed successfully for order ##{self.id}"
+    else
+      self.update(status: "payment_failed")
+      Rails.logger.error "Payment failed for order ##{self.id}"
+    end
+  end
+
 end
