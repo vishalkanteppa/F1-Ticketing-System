@@ -19,7 +19,7 @@ class Order < ApplicationRecord
     end
   end
 
-  def process_payment(payment_type:, payment_details:)
+  def process_payment!(payment_type:, payment_details:)
     if payment_type == "Credit card"
       payment_details = {
           credit_card_number: payment_details[:credit_card_number],
@@ -28,7 +28,7 @@ class Order < ApplicationRecord
           }
     elsif payment_type == "Paypal"
         payment_details = {
-            credit_card_number: payment_details[:wallet_no],
+            wallet_no: payment_details[:wallet_no],
             }
     elsif payment_type == "SEPA"
         payment_details = {
@@ -43,6 +43,7 @@ class Order < ApplicationRecord
     )
 
     if payment_result.succeeded?
+      OrderMailer.confirmation(self).deliver_later
       self.update(status: "paid")
       Rails.logger.info "Payment processed successfully for order ##{self.id}"
     else
@@ -51,4 +52,21 @@ class Order < ApplicationRecord
     end
   end
 
+  def validate_payment_details(payment_details)
+    case payment_type
+    when "Credit card"
+      if payment_details[:credit_card_number].blank? || payment_details[:expiration_date].blank? || payment_details[:cvv].blank?
+        return [false, "Credit card number, expiration date, and CVV are required."]
+      end
+    when "Paypal"
+      return [false, "Wallet number is required for PayPal."] if payment_details[:wallet_no].blank?
+    when "SEPA"
+      if payment_details[:iban].blank? || payment_details[:bic].blank?
+        return [false, "IBAN and BIC are required for SEPA payments."]
+      end
+    else
+      return [false, "Invalid payment method selected."]
+    end
+    [true, nil]
+  end
 end

@@ -25,44 +25,26 @@ class OrdersController < ApplicationController
         payment_type = params[:order][:payment_type]
         @order.payment_type = payment_type
 
-        payment_details = params[:order].slice(:credit_card_number, :expiration_date, :cvv, :wallet_no, :iban, :bic)
+        payment_details = params.require(:order).permit(:credit_card_number, :expiration_date, :cvv, :wallet_no, :iban, :bic)
 
-        if payment_type == "Credit card"
-            if payment_details[:credit_card_number].blank? || payment_details[:expiration_date].blank? || payment_details[:cvv].blank?
-              flash[:error] = "Credit card number, expiration date, and CVV are required."
-              render :new, status: :unprocessable_entity and return
-            end
-        elsif payment_type == "Paypal"
-            if payment_details[:wallet_no].blank?
-              flash[:error] = "Wallet number is required for PayPal."
-              render :new, status: :unprocessable_entity and return
-            end
-        elsif payment_type == "SEPA"
-            if payment_details[:iban].blank? || payment_details[:bic].blank?
-              flash[:error] = "IBAN and BIC are required for SEPA payments."
-              render :new, status: :unprocessable_entity and return
-            end
-        else
-            flash[:error] = "Invalid payment method selected."
-            render :new, status: :unprocessable_entity and return
+        is_valid, error_message = @order.validate_payment_details(params[:order])
+
+        if !is_valid
+            flash[:error] = error_message
+            render :new, status: :unprocessable_entity
+            return
         end
 
         if @order.save
             @order.add_line_items_from_cart(@cart)
-            payment_result = @order.process_payment(payment_type: payment_type, payment_details: params[:order])
-            if payment_result
-                if @order.line_items.any?
-                    OrderMailer.confirmation(@order).deliver_now
-                    Cart.destroy(session[:cart_id])
-                    session[:cart_id] = nil
-                    redirect_to orders_path, notice: "Thank you for your order"
-                else
-                    Rails.logger.error "Line items were not correctly added to the order: #{@order.id}"
-                    flash[:error] = "There was an error processing your order. Please try again."
-                    render :new, status: :unprocessable_entity
-                end
+            ProcessPaymentOrderJob.perform_later(order: @order, payment_type: payment_type, payment_details: payment_details)
+            if @order.line_items.any?
+                Cart.destroy(session[:cart_id])
+                session[:cart_id] = nil
+                redirect_to orders_path, notice: "Thank you, your order has been placed. Payment is being processed."
             else
-                flash[:error] = "Payment failed. Please check your payment details and try again."
+                Rails.logger.error "Line items were not correctly added to the order: #{@order.id}"
+                flash[:error] = "There was an error processing your order. Please try again."
                 render :new, status: :unprocessable_entity
             end
         else
