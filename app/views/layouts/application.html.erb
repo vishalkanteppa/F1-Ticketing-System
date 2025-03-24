@@ -39,12 +39,16 @@
                         <%= link_to "Events", events_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
                         <%= link_to "Orders", orders_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
                         <%= link_to "Cart", carts_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+                        <%= link_to "Sign In", sessions_new_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
 
                     </div>
                 </div>
             </div>
         </div>
     </nav>
+    
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
 
     <main class="container mx-auto mt-4 px-5 flex">
         <%= yield %>

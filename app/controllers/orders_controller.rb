@@ -18,7 +18,6 @@ class OrdersController < ApplicationController
 
     def create
         @order = Order.new
-
         @order.total_price = @cart.total_price
         user = User.find(1) # temp user for now
         @order.user = user
@@ -26,9 +25,7 @@ class OrdersController < ApplicationController
         @order.payment_type = payment_type
 
         payment_details = params.require(:order).permit(:credit_card_number, :expiration_date, :cvv, :wallet_no, :iban, :bic)
-
         is_valid, error_message = @order.validate_payment_details(params[:order])
-
         if !is_valid
             flash[:error] = error_message
             render :new, status: :unprocessable_entity
