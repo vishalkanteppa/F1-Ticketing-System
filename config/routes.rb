@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+  delete '/users/sign_out', to: 'users/sessions#destroy' #explicitly defining route as it was conflicting
   get "admin/index"
   get "sessions/new"
   post "sessions/create"
   get "sessions/destroy"
-  resources :users
+  resources :users, only: [ :create, ]
   resources :line_items
   resources :carts
   resources :events

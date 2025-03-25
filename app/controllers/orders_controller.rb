@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
     include CurrentCart
+    before_action :authenticate_user!
     before_action :set_cart, only: %i[ new create ]
     before_action :ensure_cart_isnt_empty, only: %i[ new ]
     before_action :set_order, only: %i[ show edit update destroy ]
@@ -13,13 +14,13 @@ class OrdersController < ApplicationController
     end
 
     def index
-        @orders = Order.all
+        @orders = current_user.orders
     end
 
     def create
         @order = Order.new
         @order.total_price = @cart.total_price
-        user = User.find(1) # temp user for now
+        user = User.find(current_user.id) # temp user for now
         @order.user = user
         payment_type = params[:order][:payment_type]
         @order.payment_type = payment_type

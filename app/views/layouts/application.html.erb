@@ -25,7 +25,7 @@
 </head>
 
 <body class="w-full h-screen max-w-5xl mx-auto py-10 bg-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('<%= asset_path("f1.jpg") %>'); background-size: 100% auto;">
-    
+
     <nav>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -39,16 +39,32 @@
                         <%= link_to "Events", events_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
                         <%= link_to "Orders", orders_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
                         <%= link_to "Cart", carts_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
-                        <%= link_to "Sign In", sessions_new_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
-
+                        <% if user_signed_in? %>
+                            <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+                        <% else %>
+                            <%= link_to "Sign In", new_user_session_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+                        <% end %>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
-    
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+
+    <div class="text-center mx-auto md:w-2/3 w-full">
+        <% if notice.present? %>
+        <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice">
+            <%= notice %>
+        </p>
+        <% end %>
+
+        <% if alert.present? %>
+        <div class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline"><%= alert %></span>
+        </div>
+        <% end %>
+    </div>
+
 
     <main class="container mx-auto mt-4 px-5 flex">
         <%= yield %>
